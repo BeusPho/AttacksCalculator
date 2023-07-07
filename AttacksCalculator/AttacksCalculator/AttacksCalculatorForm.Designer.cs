@@ -51,8 +51,19 @@
             radioButtonWoundRerollOnes = new RadioButton();
             radioButtonWoundFullReroll = new RadioButton();
             DamageFinalTextbox = new TextBox();
+            groupBox3 = new GroupBox();
+            textBox1 = new TextBox();
+            radioButton5 = new RadioButton();
+            radioButton4 = new RadioButton();
+            radioButton1 = new RadioButton();
+            radioButton2 = new RadioButton();
+            radioButton3 = new RadioButton();
+            label5 = new Label();
+            FnpComboBox = new ComboBox();
+            OnlyMwFnpCheckBox = new CheckBox();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
+            groupBox3.SuspendLayout();
             SuspendLayout();
             // 
             // SustainedHitsCheckbox
@@ -165,7 +176,7 @@
             // ArmorComboBox
             // 
             ArmorComboBox.FormattingEnabled = true;
-            ArmorComboBox.Items.AddRange(new object[] { "2+", "3+", "4+", "5+", "6+" });
+            ArmorComboBox.Items.AddRange(new object[] { "2+", "3+", "4+", "5+", "6+", "-" });
             ArmorComboBox.Location = new Point(434, 50);
             ArmorComboBox.Name = "ArmorComboBox";
             ArmorComboBox.Size = new Size(46, 23);
@@ -286,17 +297,127 @@
             // 
             // DamageFinalTextbox
             // 
-            DamageFinalTextbox.Location = new Point(592, 50);
+            DamageFinalTextbox.Location = new Point(644, 50);
             DamageFinalTextbox.Name = "DamageFinalTextbox";
             DamageFinalTextbox.ReadOnly = true;
             DamageFinalTextbox.Size = new Size(100, 23);
             DamageFinalTextbox.TabIndex = 23;
             // 
+            // groupBox3
+            // 
+            groupBox3.Controls.Add(textBox1);
+            groupBox3.Controls.Add(radioButton5);
+            groupBox3.Controls.Add(radioButton4);
+            groupBox3.Controls.Add(radioButton1);
+            groupBox3.Controls.Add(radioButton2);
+            groupBox3.Controls.Add(radioButton3);
+            groupBox3.Location = new Point(12, 80);
+            groupBox3.Name = "groupBox3";
+            groupBox3.Size = new Size(100, 155);
+            groupBox3.TabIndex = 22;
+            groupBox3.TabStop = false;
+            groupBox3.Text = "sustained hits";
+            // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(41, 118);
+            textBox1.Name = "textBox1";
+            textBox1.Size = new Size(53, 23);
+            textBox1.TabIndex = 20;
+            // 
+            // radioButton5
+            // 
+            radioButton5.AutoSize = true;
+            radioButton5.Location = new Point(11, 122);
+            radioButton5.Name = "radioButton5";
+            radioButton5.Size = new Size(28, 19);
+            radioButton5.TabIndex = 19;
+            radioButton5.Text = ":";
+            radioButton5.UseVisualStyleBackColor = true;
+            radioButton5.CheckedChanged += Recalculate;
+            // 
+            // radioButton4
+            // 
+            radioButton4.AutoSize = true;
+            radioButton4.Location = new Point(11, 97);
+            radioButton4.Name = "radioButton4";
+            radioButton4.Size = new Size(31, 19);
+            radioButton4.TabIndex = 18;
+            radioButton4.Text = "3";
+            radioButton4.UseVisualStyleBackColor = true;
+            // 
+            // radioButton1
+            // 
+            radioButton1.AutoSize = true;
+            radioButton1.Checked = true;
+            radioButton1.Location = new Point(11, 22);
+            radioButton1.Name = "radioButton1";
+            radioButton1.Size = new Size(41, 19);
+            radioButton1.TabIndex = 15;
+            radioButton1.TabStop = true;
+            radioButton1.Text = "No";
+            radioButton1.UseVisualStyleBackColor = true;
+            // 
+            // radioButton2
+            // 
+            radioButton2.AutoSize = true;
+            radioButton2.Location = new Point(11, 47);
+            radioButton2.Name = "radioButton2";
+            radioButton2.Size = new Size(31, 19);
+            radioButton2.TabIndex = 16;
+            radioButton2.Text = "1";
+            radioButton2.UseVisualStyleBackColor = true;
+            // 
+            // radioButton3
+            // 
+            radioButton3.AutoSize = true;
+            radioButton3.Location = new Point(11, 72);
+            radioButton3.Name = "radioButton3";
+            radioButton3.Size = new Size(49, 19);
+            radioButton3.TabIndex = 17;
+            radioButton3.Text = "2/d3";
+            radioButton3.UseVisualStyleBackColor = true;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(592, 33);
+            label5.Name = "label5";
+            label5.Size = new Size(29, 15);
+            label5.TabIndex = 25;
+            label5.Text = "FNP";
+            label5.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // FnpComboBox
+            // 
+            FnpComboBox.FormattingEnabled = true;
+            FnpComboBox.Items.AddRange(new object[] { "-", "6+", "5+", "4+" });
+            FnpComboBox.Location = new Point(592, 50);
+            FnpComboBox.Name = "FnpComboBox";
+            FnpComboBox.Size = new Size(46, 23);
+            FnpComboBox.TabIndex = 24;
+            FnpComboBox.SelectedIndexChanged += Recalculate;
+            // 
+            // OnlyMwFnpCheckBox
+            // 
+            OnlyMwFnpCheckBox.AutoSize = true;
+            OnlyMwFnpCheckBox.Location = new Point(592, 11);
+            OnlyMwFnpCheckBox.Name = "OnlyMwFnpCheckBox";
+            OnlyMwFnpCheckBox.Size = new Size(150, 19);
+            OnlyMwFnpCheckBox.TabIndex = 26;
+            OnlyMwFnpCheckBox.Text = "Only vs Mortal Wounds";
+            OnlyMwFnpCheckBox.UseVisualStyleBackColor = true;
+            OnlyMwFnpCheckBox.CheckedChanged += Recalculate;
+            // 
             // AttacksCalculatorForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(765, 280);
+            ClientSize = new Size(964, 303);
+            Controls.Add(OnlyMwFnpCheckBox);
+            Controls.Add(label5);
+            Controls.Add(FnpComboBox);
+            Controls.Add(groupBox3);
             Controls.Add(DamageFinalTextbox);
             Controls.Add(groupBox2);
             Controls.Add(groupBox1);
@@ -317,11 +438,13 @@
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Name = "AttacksCalculatorForm";
             Text = "Attacks Calculator";
-            Load += Form1_Load;
+            Load += AttacksCalculatorFormLoad;
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             groupBox2.ResumeLayout(false);
             groupBox2.PerformLayout();
+            groupBox3.ResumeLayout(false);
+            groupBox3.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -351,5 +474,15 @@
         private RadioButton radioButtonWoundRerollOnes;
         private RadioButton radioButtonWoundFullReroll;
         private TextBox DamageFinalTextbox;
+        private GroupBox groupBox3;
+        private RadioButton radioButton1;
+        private RadioButton radioButton2;
+        private RadioButton radioButton3;
+        private RadioButton radioButton5;
+        private RadioButton radioButton4;
+        private TextBox textBox1;
+        private Label label5;
+        private ComboBox FnpComboBox;
+        private CheckBox OnlyMwFnpCheckBox;
     }
 }

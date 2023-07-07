@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttacksCalculator", "AttacksCalculator\AttacksCalculator.csproj", "{F0A8A62D-F70A-42A2-B651-08F466A84B7C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AttacksCalculator", "AttacksCalculator\AttacksCalculator.csproj", "{F0A8A62D-F70A-42A2-B651-08F466A84B7C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttacksCalculator.Tests", "AttacksCalculator.Tests\AttacksCalculator.Tests.csproj", "{C2D357C9-DEEC-475B-8257-C859ACB6B832}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{F0A8A62D-F70A-42A2-B651-08F466A84B7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F0A8A62D-F70A-42A2-B651-08F466A84B7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F0A8A62D-F70A-42A2-B651-08F466A84B7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2D357C9-DEEC-475B-8257-C859ACB6B832}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2D357C9-DEEC-475B-8257-C859ACB6B832}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2D357C9-DEEC-475B-8257-C859ACB6B832}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2D357C9-DEEC-475B-8257-C859ACB6B832}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
