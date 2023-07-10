@@ -1,4 +1,6 @@
 using AttacksCalculator.Methods;
+using System;
+using System.Reflection;
 
 namespace AttacksCalculator
 {
@@ -15,6 +17,34 @@ namespace AttacksCalculator
             ToWoundComboBox.SelectedIndex = 2;
             ArmorComboBox.SelectedIndex = 1;
             FnpComboBox.SelectedIndex = 0;
+            CritHitsComboBox.SelectedIndex = 0;
+            CritWoundsComboBox.SelectedIndex = 0;
+        }
+
+        internal void RadioButtonHitsFullRerollClicked(object sender, EventArgs e)
+        {
+            FishCritHitsCheckBox.Enabled = true;
+            Recalculate(sender, e);
+        }
+
+        internal void RadioButtonHitsFullRerollDeselected(object sender, EventArgs e)
+        {
+            FishCritHitsCheckBox.Enabled = false;
+            FishCritHitsCheckBox.Checked = false;
+            Recalculate(sender, e);
+        }
+
+        internal void RadioButtonWoundsFullRerollClicked(object sender, EventArgs e)
+        {
+            FishCritWoundsCheckBox.Enabled = true;
+            Recalculate(sender, e);
+        }
+
+        internal void RadioButtonWoundsFullRerollDeselected(object sender, EventArgs e)
+        {
+            FishCritWoundsCheckBox.Enabled = false;
+            FishCritWoundsCheckBox.Checked = false;
+            Recalculate(sender, e);
         }
 
         internal void Recalculate(object sender, EventArgs e)
@@ -28,73 +58,126 @@ namespace AttacksCalculator
                 return;
             }
 
-            double hitsLethal = CalculateCriticalHits(attacks);
-            double hitsSustained = CalculateCriticalHits(attacks);
-            double hitsCalulated = CalculateHits(attacks, ToHitComboBox.SelectedIndex, LethalHitsCheckbox.Checked);
+            var hitRerollResult = CaclulateHitReroll(attacks);
+            var hitsPostReroll = hitRerollResult.Item1;
+            var hitCritsPostReroll = hitRerollResult.Item2;
 
-            HitsTextbox.Text = hitsCalulated.ToString("F3");
+            HitsTextbox.Text = hitsPostReroll.ToString("F3");
             if (SustainedHitsCheckbox.Checked)
             {
-                HitsTextbox.Text += $" +{hitsSustained:F2}S";
+                HitsTextbox.Text += $" +{hitCritsPostReroll:F2}S";
             }
 
-            double woundsCalculated = CalculateWounds(hitsCalulated + (SustainedHitsCheckbox.Checked ? hitsSustained : 0),
-                ToWoundComboBox.SelectedIndex,
-                DevastatingWoundsCheckbox.Checked);
-            double woundsDevastated = CalculateDevastatingWounds(hitsSustained, hitsCalulated, ToWoundComboBox.SelectedIndex);
+            var hitsToCalculateWounds = hitsPostReroll + (SustainedHitsCheckbox.Checked ? hitCritsPostReroll : 0);
+            var woundRerollResult = CaclulateWoundReroll(hitsToCalculateWounds);
+            var woundsPostReroll = woundRerollResult.Item1;
+            var woundCritsPostReroll = woundRerollResult.Item2;
 
-            WoundsTextbox.Text = woundsCalculated.ToString("F3");
+            WoundsTextbox.Text = woundsPostReroll.ToString("F3");
             if (LethalHitsCheckbox.Checked)
             {
-                WoundsTextbox.Text += $" +{hitsLethal:F3}L";
+                WoundsTextbox.Text += $" +{hitCritsPostReroll:F3}L";
             }
 
-            double damageCalculated = DefenseDiceResult(woundsCalculated + (LethalHitsCheckbox.Checked ? hitsLethal : 0), ArmorComboBox.SelectedIndex);
+            double damageCalculated = Calculator.DefenseDiceResult(woundsPostReroll + (LethalHitsCheckbox.Checked ? hitCritsPostReroll : 0), ArmorComboBox.SelectedIndex);
             DamageTextbox.Text = damageCalculated.ToString("F3");
             if (DevastatingWoundsCheckbox.Checked)
             {
-                DamageTextbox.Text += $" +{woundsDevastated:F3}D";
+                DamageTextbox.Text += $" +{woundCritsPostReroll:F3}D";
             }
 
-            double damageFelt = GetDamageFelt(woundsDevastated, damageCalculated);
+            double damageFelt = GetDamageFelt(DevastatingWoundsCheckbox.Checked ? woundCritsPostReroll : 0, damageCalculated);
 
             DamageFinalTextbox.Text = damageFelt.ToString("F3");
         }
 
-        internal double CalculateDevastatingWounds(double hitsSustained, double hitsCalulated, int index)
+        private Tuple<double, double> CaclulateHitReroll(int attacks)
         {
-            if (DevastatingWoundsCheckbox.Checked is false)
+            var hitsPreReroll = CalculateHits(attacks);
+            var critsPreReroll = CalculateCriticalHits(attacks);
+
+            double hitsPostReroll;
+            double critsPostReroll;
+
+            if (radioButtonHitsRerollOnes.Checked)
             {
-                return 0;
+                hitsPostReroll = hitsPreReroll + CalculateHits(attacks / 6);
+                critsPostReroll = critsPreReroll + CalculateCriticalHits(attacks / 6);
+            }
+            else if (radioButtonHitsFullReroll.Checked)
+            {
+                if (FishCritHitsCheckBox.Checked is false)
+                {
+                    hitsPostReroll = hitsPreReroll + CalculateHits(attacks - hitsPreReroll);
+                    critsPostReroll = critsPreReroll + CalculateCriticalHits(attacks - hitsPreReroll);
+                }
+                else if (FishCritHitsCheckBox.Checked)
+                {
+                    hitsPostReroll = critsPreReroll + CalculateHits(attacks - critsPreReroll);
+                    critsPostReroll = critsPreReroll + CalculateCriticalHits(attacks - critsPreReroll);
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+            }
+            else if (radioButtonHitsNoReroll.Checked)
+            {
+                hitsPostReroll = hitsPreReroll;
+                critsPostReroll = critsPreReroll;
+            }
+            else
+            {
+                throw new NotImplementedException();
             }
 
-            double hits = hitsCalulated + (SustainedHitsCheckbox.Checked ? hitsSustained : 0);
-            var successfulWounds = hits / 6;
+            var hitsMinusLethalPostReroll = hitsPostReroll - (LethalHitsCheckbox.Checked ? critsPostReroll : 0);
+            return new Tuple<double, double>(hitsMinusLethalPostReroll, critsPostReroll);
+        }
 
-            if (radioButtonWoundNoReroll.Checked)
-            {
-                return successfulWounds;
-            }
+        private Tuple<double, double> CaclulateWoundReroll(double hits)
+        {
+            var woundsPreReroll = CalculateWounds(hits);
+            var woundCritsPreReroll = CalculateCriticalWounds(hits);
+
+            double woundsPostReroll;
+            double woundCritsPostReroll;
 
             if (radioButtonWoundRerollOnes.Checked)
             {
-                return successfulWounds + (hits / 36);
+                woundsPostReroll = woundsPreReroll + CalculateWounds(hits / 6);
+                woundCritsPostReroll = woundCritsPreReroll + CalculateCriticalWounds(hits / 6);
             }
-
-            if (radioButtonWoundFullReroll.Checked)
+            else if (radioButtonWoundFullReroll.Checked)
             {
-                return index switch
+                if (FishCritWoundsCheckBox.Checked is false)
                 {
-                    0 => successfulWounds + (hits / 36),
-                    1 => successfulWounds + (hits * 2 / 36),
-                    2 => successfulWounds + (hits * 3/ 36),
-                    3 => successfulWounds + (hits * 4 / 36),
-                    4 => successfulWounds + (hits * 5 / 36),
-                    _ => throw new NotImplementedException(),
-                };
+                    woundsPostReroll = woundsPreReroll + CalculateWounds(hits - woundsPreReroll);
+                    woundCritsPostReroll = woundCritsPreReroll + CalculateCriticalWounds(hits - woundsPreReroll);
+                }
+                else if (FishCritWoundsCheckBox.Checked)
+                {
+                    woundsPostReroll = woundCritsPreReroll + CalculateWounds(hits - woundCritsPreReroll);
+                    woundCritsPostReroll = woundCritsPreReroll + CalculateCriticalWounds(hits - woundCritsPreReroll);
+
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+            }
+            else if (radioButtonWoundNoReroll.Checked)
+            {
+                woundsPostReroll = woundsPreReroll;
+                woundCritsPostReroll = woundCritsPreReroll;
+            }
+            else
+            {
+                throw new NotImplementedException();
             }
 
-            throw new NotImplementedException();
+            var woundsMinusDevastatingPostReroll = woundsPostReroll - (DevastatingWoundsCheckbox.Checked ? woundCritsPostReroll : 0);
+            return new Tuple<double, double>(woundsMinusDevastatingPostReroll, woundCritsPostReroll);
         }
 
         internal double GetDamageFelt(double woundsDevastated, double damageCalculated)
@@ -109,61 +192,27 @@ namespace AttacksCalculator
             }
         }
 
-        internal double CalculateWounds(double hits, int index, bool devastating)
+        internal double CalculateWounds(double hits)
         {
-            if (radioButtonWoundNoReroll.Checked)
-            {
-                return Calculator.WoundDiceResult(hits, index, devastating);
-            }
+            var index = ToWoundComboBox.SelectedIndex;
 
-            if (radioButtonWoundRerollOnes.Checked)
-            {
-                return Calculator.WoundDiceResult(hits, index, devastating) + Calculator.WoundDiceResult(hits / 6, index, devastating);
-            }
-
-            if (radioButtonWoundFullReroll.Checked)
-            {
-                return Calculator.WoundWithFullReroll(hits, index, devastating);
-            }
-
-            throw new NotImplementedException();
+            return Calculator.WoundDiceResult(hits, index);
         }
 
-        internal double CalculateCriticalHits(double attacks)
+        internal static double CalculateCriticalWounds(double hits)
         {
-            return CalculateHits(attacks, 4, false);
+            return hits / 6;
         }
 
-        internal double CalculateHits(double attacks, int index, bool lethal)
+        internal double CalculateHits(double attacks)
         {
-            if (radioButtonHitsNoReroll.Checked)
-            {
-                return Calculator.AttackDiceResult(attacks, index, lethal);
-            }
-
-            if (radioButtonHitsRerollOnes.Checked)
-            {
-                return Calculator.AttackDiceResult(attacks, index, lethal) + Calculator.AttackDiceResult(attacks / 6, index, lethal);
-            }
-
-            if (radioButtonHitsFullReroll.Checked)
-            {
-                var successfulHits = Calculator.AttackDiceResult(attacks, index, lethal);
-                return successfulHits + Calculator.AttackDiceResult(attacks - successfulHits, index, lethal);
-            }
-
-            throw new NotImplementedException();
+            var index = ToHitComboBox.SelectedIndex;
+            return Calculator.AttackDiceResult(attacks, index);
         }
 
-        internal static double DefenseDiceResult(double attacks, int index) => index switch
+        internal static double CalculateCriticalHits(double attacks)
         {
-            5 => attacks,
-            4 => attacks * 5 / 6,
-            3 => attacks * 2 / 3,
-            2 => attacks / 2,
-            1 => attacks / 3,
-            0 => attacks / 6,
-            _ => throw new NotImplementedException(),
-        };
+            return attacks / 6;
+        }
     }
 }

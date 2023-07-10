@@ -1,44 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AttacksCalculator.Methods;
+﻿namespace AttacksCalculator.Methods;
 
 public class Calculator
 {
-    public static double WoundDiceResult(double hits, int index, bool devastating)
+    public static double WoundDiceResult(double hits, int index)
     {
-        if (devastating is false)
-        {
-            return index switch
-            {
-                0 => hits * 5 / 6,
-                1 => hits * 2 / 3,
-                2 => hits / 2,
-                3 => hits / 3,
-                4 => hits / 6,
-                _ => throw new NotImplementedException(),
-            };
-        }
-
         return index switch
         {
-            0 => hits * 2 / 3,
-            1 => hits / 2,
-            2 => hits / 3,
-            3 => hits / 6,
-            4 => 0,
+            0 => hits * 5 / 6,
+            1 => hits * 2 / 3,
+            2 => hits / 2,
+            3 => hits / 3,
+            4 => hits / 6,
             _ => throw new NotImplementedException(),
         };
-    }
-
-    public static double WoundWithFullReroll(double hits, int index, bool devastating)
-    {
-        var successfulWounds = WoundDiceResult(hits, index, devastating);
-        var crits = hits / 6;
-        return successfulWounds + WoundDiceResult(hits - (successfulWounds + (devastating ? crits : 0)), index, devastating);
     }
 
     internal static double CalculateFnp(double damage, int index)
@@ -53,29 +27,27 @@ public class Calculator
         };
     }
 
-    internal static double AttackDiceResult(double attacks, int index, bool lethal)
+    internal static double AttackDiceResult(double attacks, int index)
     {
-        if (lethal is false)
-        {
-            return index switch
-            {
-                0 => attacks * 5 / 6,
-                1 => attacks * 2 / 3,
-                2 => attacks / 2,
-                3 => attacks / 3,
-                4 => attacks / 6,
-                _ => throw new NotImplementedException(),
-            };
-        }
-
         return index switch
         {
-            0 => attacks * 2 / 3,
-            1 => attacks / 2,
-            2 => attacks / 3,
-            3 => attacks / 6,
-            4 => 0,
+            0 => attacks * 5 / 6,
+            1 => attacks * 2 / 3,
+            2 => attacks / 2,
+            3 => attacks / 3,
+            4 => attacks / 6,
             _ => throw new NotImplementedException(),
         };
     }
+
+    internal static double DefenseDiceResult(double attacks, int index) => index switch
+    {
+        5 => attacks,
+        4 => attacks * 5 / 6,
+        3 => attacks * 2 / 3,
+        2 => attacks / 2,
+        1 => attacks / 3,
+        0 => attacks / 6,
+        _ => throw new NotImplementedException(),
+    };
 }

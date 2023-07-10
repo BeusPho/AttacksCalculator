@@ -61,6 +61,12 @@
             label5 = new Label();
             FnpComboBox = new ComboBox();
             OnlyMwFnpCheckBox = new CheckBox();
+            FishCritHitsCheckBox = new CheckBox();
+            FishCritWoundsCheckBox = new CheckBox();
+            CritHitsComboBox = new ComboBox();
+            label6 = new Label();
+            label7 = new Label();
+            CritWoundsComboBox = new ComboBox();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             groupBox3.SuspendLayout();
@@ -212,7 +218,7 @@
             radioButtonHitsNoReroll.TabStop = true;
             radioButtonHitsNoReroll.Text = "No rerolls";
             radioButtonHitsNoReroll.UseVisualStyleBackColor = true;
-            radioButtonHitsNoReroll.CheckedChanged += Recalculate;
+            radioButtonHitsNoReroll.CheckedChanged += RadioButtonHitsFullRerollDeselected;
             // 
             // radioButtonHitsRerollOnes
             // 
@@ -223,7 +229,7 @@
             radioButtonHitsRerollOnes.TabIndex = 16;
             radioButtonHitsRerollOnes.Text = "Reroll 1s";
             radioButtonHitsRerollOnes.UseVisualStyleBackColor = true;
-            radioButtonHitsRerollOnes.CheckedChanged += Recalculate;
+            radioButtonHitsRerollOnes.CheckedChanged += RadioButtonHitsFullRerollDeselected;
             // 
             // radioButtonHitsFullReroll
             // 
@@ -234,7 +240,7 @@
             radioButtonHitsFullReroll.TabIndex = 17;
             radioButtonHitsFullReroll.Text = "Full reroll";
             radioButtonHitsFullReroll.UseVisualStyleBackColor = true;
-            radioButtonHitsFullReroll.CheckedChanged += Recalculate;
+            radioButtonHitsFullReroll.CheckedChanged += RadioButtonHitsFullRerollClicked;
             // 
             // groupBox1
             // 
@@ -271,7 +277,7 @@
             radioButtonWoundNoReroll.TabStop = true;
             radioButtonWoundNoReroll.Text = "No rerolls";
             radioButtonWoundNoReroll.UseVisualStyleBackColor = true;
-            radioButtonWoundNoReroll.CheckedChanged += Recalculate;
+            radioButtonWoundNoReroll.CheckedChanged += RadioButtonWoundsFullRerollDeselected;
             // 
             // radioButtonWoundRerollOnes
             // 
@@ -282,7 +288,7 @@
             radioButtonWoundRerollOnes.TabIndex = 16;
             radioButtonWoundRerollOnes.Text = "Reroll 1s";
             radioButtonWoundRerollOnes.UseVisualStyleBackColor = true;
-            radioButtonWoundRerollOnes.CheckedChanged += Recalculate;
+            radioButtonWoundRerollOnes.CheckedChanged += RadioButtonWoundsFullRerollDeselected;
             // 
             // radioButtonWoundFullReroll
             // 
@@ -293,7 +299,7 @@
             radioButtonWoundFullReroll.TabIndex = 17;
             radioButtonWoundFullReroll.Text = "Full reroll";
             radioButtonWoundFullReroll.UseVisualStyleBackColor = true;
-            radioButtonWoundFullReroll.CheckedChanged += Recalculate;
+            radioButtonWoundFullReroll.CheckedChanged += RadioButtonWoundsFullRerollClicked;
             // 
             // DamageFinalTextbox
             // 
@@ -311,6 +317,7 @@
             groupBox3.Controls.Add(radioButton1);
             groupBox3.Controls.Add(radioButton2);
             groupBox3.Controls.Add(radioButton3);
+            groupBox3.Enabled = false;
             groupBox3.Location = new Point(12, 80);
             groupBox3.Name = "groupBox3";
             groupBox3.Size = new Size(100, 155);
@@ -320,7 +327,7 @@
             // 
             // textBox1
             // 
-            textBox1.Location = new Point(41, 118);
+            textBox1.Location = new Point(41, 121);
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(53, 23);
             textBox1.TabIndex = 20;
@@ -409,11 +416,81 @@
             OnlyMwFnpCheckBox.UseVisualStyleBackColor = true;
             OnlyMwFnpCheckBox.CheckedChanged += Recalculate;
             // 
+            // FishCritHitsCheckBox
+            // 
+            FishCritHitsCheckBox.AutoSize = true;
+            FishCritHitsCheckBox.Enabled = false;
+            FishCritHitsCheckBox.Location = new Point(118, 186);
+            FishCritHitsCheckBox.Name = "FishCritHitsCheckBox";
+            FishCritHitsCheckBox.Size = new Size(74, 19);
+            FishCritHitsCheckBox.TabIndex = 27;
+            FishCritHitsCheckBox.Text = "Fish Crits";
+            FishCritHitsCheckBox.UseVisualStyleBackColor = true;
+            FishCritHitsCheckBox.CheckedChanged += Recalculate;
+            // 
+            // FishCritWoundsCheckBox
+            // 
+            FishCritWoundsCheckBox.AutoSize = true;
+            FishCritWoundsCheckBox.Enabled = false;
+            FishCritWoundsCheckBox.Location = new Point(276, 186);
+            FishCritWoundsCheckBox.Name = "FishCritWoundsCheckBox";
+            FishCritWoundsCheckBox.Size = new Size(74, 19);
+            FishCritWoundsCheckBox.TabIndex = 28;
+            FishCritWoundsCheckBox.Text = "Fish Crits";
+            FishCritWoundsCheckBox.UseVisualStyleBackColor = true;
+            FishCritWoundsCheckBox.CheckedChanged += Recalculate;
+            // 
+            // CritHitsComboBox
+            // 
+            CritHitsComboBox.Enabled = false;
+            CritHitsComboBox.FormattingEnabled = true;
+            CritHitsComboBox.Items.AddRange(new object[] { "6+", "5+" });
+            CritHitsComboBox.Location = new Point(146, 211);
+            CritHitsComboBox.Name = "CritHitsComboBox";
+            CritHitsComboBox.Size = new Size(46, 23);
+            CritHitsComboBox.TabIndex = 29;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(119, 214);
+            label6.Name = "label6";
+            label6.Size = new Size(21, 15);
+            label6.TabIndex = 30;
+            label6.Text = "on";
+            label6.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(277, 209);
+            label7.Name = "label7";
+            label7.Size = new Size(21, 15);
+            label7.TabIndex = 32;
+            label7.Text = "on";
+            label7.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // CritWoundsComboBox
+            // 
+            CritWoundsComboBox.Enabled = false;
+            CritWoundsComboBox.FormattingEnabled = true;
+            CritWoundsComboBox.Items.AddRange(new object[] { "6+", "5+" });
+            CritWoundsComboBox.Location = new Point(304, 206);
+            CritWoundsComboBox.Name = "CritWoundsComboBox";
+            CritWoundsComboBox.Size = new Size(46, 23);
+            CritWoundsComboBox.TabIndex = 31;
+            // 
             // AttacksCalculatorForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(964, 303);
+            Controls.Add(label7);
+            Controls.Add(CritWoundsComboBox);
+            Controls.Add(label6);
+            Controls.Add(CritHitsComboBox);
+            Controls.Add(FishCritWoundsCheckBox);
+            Controls.Add(FishCritHitsCheckBox);
             Controls.Add(OnlyMwFnpCheckBox);
             Controls.Add(label5);
             Controls.Add(FnpComboBox);
@@ -484,5 +561,11 @@
         private Label label5;
         private ComboBox FnpComboBox;
         private CheckBox OnlyMwFnpCheckBox;
+        private CheckBox FishCritHitsCheckBox;
+        private CheckBox FishCritWoundsCheckBox;
+        private ComboBox CritHitsComboBox;
+        private Label label6;
+        private Label label7;
+        private ComboBox CritWoundsComboBox;
     }
 }
