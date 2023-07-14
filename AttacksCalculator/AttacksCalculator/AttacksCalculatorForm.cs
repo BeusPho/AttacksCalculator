@@ -1,11 +1,15 @@
+using AttacksCalculator.Entities;
 using AttacksCalculator.Methods;
 using System;
+using System.Collections;
 using System.Reflection;
 
 namespace AttacksCalculator
 {
     public partial class AttacksCalculatorForm : Form
     {
+        private bool IsChartCalculated = false;
+
         public AttacksCalculatorForm()
         {
             InitializeComponent();
@@ -58,7 +62,7 @@ namespace AttacksCalculator
                 return;
             }
 
-            var hitRerollResult = CaclulateHitReroll(attacks);
+            var hitRerollResult = CaclulateHitRoll(attacks);
             var hitsPostReroll = hitRerollResult.Item1;
             var hitCritsPostReroll = hitRerollResult.Item2;
 
@@ -69,7 +73,7 @@ namespace AttacksCalculator
             }
 
             var hitsToCalculateWounds = hitsPostReroll + (SustainedHitsCheckbox.Checked ? hitCritsPostReroll : 0);
-            var woundRerollResult = CaclulateWoundReroll(hitsToCalculateWounds);
+            var woundRerollResult = CaclulateWoundRoll(hitsToCalculateWounds);
             var woundsPostReroll = woundRerollResult.Item1;
             var woundCritsPostReroll = woundRerollResult.Item2;
 
@@ -91,7 +95,7 @@ namespace AttacksCalculator
             DamageFinalTextbox.Text = damageFelt.ToString("F3");
         }
 
-        private Tuple<double, double> CaclulateHitReroll(int attacks)
+        private Tuple<double, double> CaclulateHitRoll(int attacks)
         {
             var hitsPreReroll = CalculateHits(attacks);
             var critsPreReroll = CalculateCriticalHits(attacks);
@@ -135,7 +139,7 @@ namespace AttacksCalculator
             return new Tuple<double, double>(hitsMinusLethalPostReroll, critsPostReroll);
         }
 
-        private Tuple<double, double> CaclulateWoundReroll(double hits)
+        private Tuple<double, double> CaclulateWoundRoll(double hits)
         {
             var woundsPreReroll = CalculateWounds(hits);
             var woundCritsPreReroll = CalculateCriticalWounds(hits);
@@ -192,11 +196,12 @@ namespace AttacksCalculator
             }
         }
 
-        internal double CalculateWounds(double hits)
+        internal double CalculateWounds(double hits, int? index = null)
         {
-            var index = ToWoundComboBox.SelectedIndex;
+            index = index == null ? ToWoundComboBox.SelectedIndex : index;
+            var rollValue = ToHitComboBox.Items[index.Value];
 
-            return Calculator.WoundDiceResult(hits, index);
+            return Calculator.WoundDiceResult(hits, index.Value);
         }
 
         internal static double CalculateCriticalWounds(double hits)
@@ -204,15 +209,58 @@ namespace AttacksCalculator
             return hits / 6;
         }
 
-        internal double CalculateHits(double attacks)
+        internal double CalculateHits(double attacks, int? index = null)
         {
-            var index = ToHitComboBox.SelectedIndex;
-            return Calculator.AttackDiceResult(attacks, index);
+            index = index == null ? ToHitComboBox.SelectedIndex : index;
+            return Calculator.HitDiceResult(attacks, index.Value);
         }
 
         internal static double CalculateCriticalHits(double attacks)
         {
             return attacks / 6;
+        }
+
+        private void MainTabs_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var steps = new List<ChartStep>();
+            if (IsChartCalculated is false)
+            {
+                var attacks = 100;
+                List<string> variants = new() { "3+", "4+", "5+" };
+                foreach (var hitroll in variants)
+                {
+                    var hits = Calculator.GoodDiceResult(attacks, hitroll);
+                    var crits = CalculateCriticalHits(attacks);
+                    foreach (var woundroll in variants)
+                    {
+                        var wounds = Calculator.GoodDiceResult(hits, woundroll);
+                        var woundsSustained = Calculator.GoodDiceResult(hits + crits, woundroll);
+                        var woundsLethal = Calculator.GoodDiceResult(hits - crits, woundroll) + crits;
+                        var critWounds = CalculateCriticalWounds(hits);
+                        foreach (var armor in variants)
+                        {
+                            steps.Add(new ChartStep
+                            {
+                                Key = hitroll + "/" + woundroll + "/" + armor,
+                                ValueNoMods = Calculator.BadDiceResult(wounds, armor),
+                                ValueSustainedHits = Calculator.BadDiceResult(woundsSustained, armor),
+                                ValueLethalHits = Calculator.BadDiceResult(woundsLethal, armor),
+                                ValueDevWounds = Calculator.BadDiceResult(wounds - critWounds, armor) + critWounds,
+                            });
+                        }
+                    }
+                }
+
+                DiffChart.DataSource = steps;
+                DiffChart.Series["NoMods"].XValueMember = "Key";
+                DiffChart.Series["NoMods"].YValueMembers = "ValueNoMods";
+                DiffChart.Series["Sustained"].YValueMembers = "ValueSustainedHits";
+                DiffChart.Series["Lethal"].YValueMembers = "ValueLethalHits";
+                DiffChart.Series["Devastating"].YValueMembers = "ValueDevWounds";
+                DiffChart.ChartAreas.Single().AxisX.Interval = 1;
+                DiffChart.DataBind();
+                IsChartCalculated = true;
+            }
         }
     }
 }

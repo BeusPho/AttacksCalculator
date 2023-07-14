@@ -15,6 +15,27 @@ public class Calculator
         };
     }
 
+    public static double GoodDiceResult(double amount, string result) => result switch
+    {
+        "2+" => amount * 5 / 6,
+        "3+" => amount * 2 / 3,
+        "4+" => amount / 2,
+        "5+" => amount / 3,
+        "6+" => amount / 6,
+        _ => throw new NotImplementedException(),
+    };
+
+    internal static double BadDiceResult(double amount, string result) => result switch
+    {
+        "2+" => amount / 6,
+        "3+" => amount / 3,
+        "4+" => amount / 2,
+        "5+" => amount * 2 / 3,
+        "6+" => amount * 5 / 6,
+        "-" => amount,
+        _ => throw new NotImplementedException(),
+    };
+
     internal static double CalculateFnp(double damage, int index)
     {
         return index switch
@@ -27,7 +48,7 @@ public class Calculator
         };
     }
 
-    internal static double AttackDiceResult(double attacks, int index)
+    internal static double HitDiceResult(double attacks, int index)
     {
         return index switch
         {

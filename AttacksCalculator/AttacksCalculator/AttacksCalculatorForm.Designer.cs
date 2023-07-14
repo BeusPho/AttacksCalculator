@@ -28,6 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             SustainedHitsCheckbox = new CheckBox();
             LethalHitsCheckbox = new CheckBox();
             DevastatingWoundsCheckbox = new CheckBox();
@@ -67,15 +73,23 @@
             label6 = new Label();
             label7 = new Label();
             CritWoundsComboBox = new ComboBox();
+            DiffChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            MainTabs = new TabControl();
+            AttacksCalculator = new TabPage();
+            Chart = new TabPage();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)DiffChart).BeginInit();
+            MainTabs.SuspendLayout();
+            AttacksCalculator.SuspendLayout();
+            Chart.SuspendLayout();
             SuspendLayout();
             // 
             // SustainedHitsCheckbox
             // 
             SustainedHitsCheckbox.AutoSize = true;
-            SustainedHitsCheckbox.Location = new Point(12, 11);
+            SustainedHitsCheckbox.Location = new Point(14, 8);
             SustainedHitsCheckbox.Name = "SustainedHitsCheckbox";
             SustainedHitsCheckbox.Size = new Size(101, 19);
             SustainedHitsCheckbox.TabIndex = 0;
@@ -86,7 +100,7 @@
             // LethalHitsCheckbox
             // 
             LethalHitsCheckbox.AutoSize = true;
-            LethalHitsCheckbox.Location = new Point(118, 11);
+            LethalHitsCheckbox.Location = new Point(120, 8);
             LethalHitsCheckbox.Name = "LethalHitsCheckbox";
             LethalHitsCheckbox.Size = new Size(82, 19);
             LethalHitsCheckbox.TabIndex = 1;
@@ -97,7 +111,7 @@
             // DevastatingWoundsCheckbox
             // 
             DevastatingWoundsCheckbox.AutoSize = true;
-            DevastatingWoundsCheckbox.Location = new Point(276, 11);
+            DevastatingWoundsCheckbox.Location = new Point(278, 8);
             DevastatingWoundsCheckbox.Name = "DevastatingWoundsCheckbox";
             DevastatingWoundsCheckbox.Size = new Size(135, 19);
             DevastatingWoundsCheckbox.TabIndex = 2;
@@ -107,7 +121,7 @@
             // 
             // AttacksTextbox
             // 
-            AttacksTextbox.Location = new Point(12, 50);
+            AttacksTextbox.Location = new Point(14, 47);
             AttacksTextbox.Name = "AttacksTextbox";
             AttacksTextbox.Size = new Size(100, 23);
             AttacksTextbox.TabIndex = 3;
@@ -116,7 +130,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(12, 33);
+            label1.Location = new Point(14, 30);
             label1.Name = "label1";
             label1.Size = new Size(68, 15);
             label1.TabIndex = 4;
@@ -127,7 +141,7 @@
             // 
             ToHitComboBox.FormattingEnabled = true;
             ToHitComboBox.Items.AddRange(new object[] { "2+", "3+", "4+", "5+", "6+" });
-            ToHitComboBox.Location = new Point(118, 50);
+            ToHitComboBox.Location = new Point(120, 47);
             ToHitComboBox.Name = "ToHitComboBox";
             ToHitComboBox.Size = new Size(46, 23);
             ToHitComboBox.TabIndex = 6;
@@ -135,7 +149,7 @@
             // 
             // HitsTextbox
             // 
-            HitsTextbox.Location = new Point(170, 50);
+            HitsTextbox.Location = new Point(172, 47);
             HitsTextbox.Name = "HitsTextbox";
             HitsTextbox.ReadOnly = true;
             HitsTextbox.Size = new Size(100, 23);
@@ -145,7 +159,7 @@
             // 
             ToWoundComboBox.FormattingEnabled = true;
             ToWoundComboBox.Items.AddRange(new object[] { "2+", "3+", "4+", "5+", "6+" });
-            ToWoundComboBox.Location = new Point(276, 50);
+            ToWoundComboBox.Location = new Point(278, 47);
             ToWoundComboBox.Name = "ToWoundComboBox";
             ToWoundComboBox.Size = new Size(46, 23);
             ToWoundComboBox.TabIndex = 8;
@@ -154,7 +168,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(118, 33);
+            label2.Location = new Point(120, 30);
             label2.Name = "label2";
             label2.Size = new Size(35, 15);
             label2.TabIndex = 9;
@@ -164,7 +178,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(276, 33);
+            label3.Location = new Point(278, 30);
             label3.Name = "label3";
             label3.Size = new Size(58, 15);
             label3.TabIndex = 10;
@@ -173,7 +187,7 @@
             // 
             // WoundsTextbox
             // 
-            WoundsTextbox.Location = new Point(328, 50);
+            WoundsTextbox.Location = new Point(330, 47);
             WoundsTextbox.Name = "WoundsTextbox";
             WoundsTextbox.ReadOnly = true;
             WoundsTextbox.Size = new Size(100, 23);
@@ -183,7 +197,7 @@
             // 
             ArmorComboBox.FormattingEnabled = true;
             ArmorComboBox.Items.AddRange(new object[] { "2+", "3+", "4+", "5+", "6+", "-" });
-            ArmorComboBox.Location = new Point(434, 50);
+            ArmorComboBox.Location = new Point(436, 47);
             ArmorComboBox.Name = "ArmorComboBox";
             ArmorComboBox.Size = new Size(46, 23);
             ArmorComboBox.TabIndex = 12;
@@ -192,7 +206,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(434, 33);
+            label4.Location = new Point(436, 30);
             label4.Name = "label4";
             label4.Size = new Size(39, 15);
             label4.TabIndex = 13;
@@ -201,7 +215,7 @@
             // 
             // DamageTextbox
             // 
-            DamageTextbox.Location = new Point(486, 50);
+            DamageTextbox.Location = new Point(488, 47);
             DamageTextbox.Name = "DamageTextbox";
             DamageTextbox.ReadOnly = true;
             DamageTextbox.Size = new Size(100, 23);
@@ -247,7 +261,7 @@
             groupBox1.Controls.Add(radioButtonHitsNoReroll);
             groupBox1.Controls.Add(radioButtonHitsRerollOnes);
             groupBox1.Controls.Add(radioButtonHitsFullReroll);
-            groupBox1.Location = new Point(118, 80);
+            groupBox1.Location = new Point(120, 77);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(88, 100);
             groupBox1.TabIndex = 21;
@@ -259,7 +273,7 @@
             groupBox2.Controls.Add(radioButtonWoundNoReroll);
             groupBox2.Controls.Add(radioButtonWoundRerollOnes);
             groupBox2.Controls.Add(radioButtonWoundFullReroll);
-            groupBox2.Location = new Point(276, 80);
+            groupBox2.Location = new Point(278, 77);
             groupBox2.Name = "groupBox2";
             groupBox2.Size = new Size(88, 100);
             groupBox2.TabIndex = 22;
@@ -303,7 +317,7 @@
             // 
             // DamageFinalTextbox
             // 
-            DamageFinalTextbox.Location = new Point(644, 50);
+            DamageFinalTextbox.Location = new Point(646, 47);
             DamageFinalTextbox.Name = "DamageFinalTextbox";
             DamageFinalTextbox.ReadOnly = true;
             DamageFinalTextbox.Size = new Size(100, 23);
@@ -318,7 +332,7 @@
             groupBox3.Controls.Add(radioButton2);
             groupBox3.Controls.Add(radioButton3);
             groupBox3.Enabled = false;
-            groupBox3.Location = new Point(12, 80);
+            groupBox3.Location = new Point(14, 77);
             groupBox3.Name = "groupBox3";
             groupBox3.Size = new Size(100, 155);
             groupBox3.TabIndex = 22;
@@ -388,7 +402,7 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(592, 33);
+            label5.Location = new Point(594, 30);
             label5.Name = "label5";
             label5.Size = new Size(29, 15);
             label5.TabIndex = 25;
@@ -399,7 +413,7 @@
             // 
             FnpComboBox.FormattingEnabled = true;
             FnpComboBox.Items.AddRange(new object[] { "-", "6+", "5+", "4+" });
-            FnpComboBox.Location = new Point(592, 50);
+            FnpComboBox.Location = new Point(594, 47);
             FnpComboBox.Name = "FnpComboBox";
             FnpComboBox.Size = new Size(46, 23);
             FnpComboBox.TabIndex = 24;
@@ -408,7 +422,7 @@
             // OnlyMwFnpCheckBox
             // 
             OnlyMwFnpCheckBox.AutoSize = true;
-            OnlyMwFnpCheckBox.Location = new Point(592, 11);
+            OnlyMwFnpCheckBox.Location = new Point(594, 8);
             OnlyMwFnpCheckBox.Name = "OnlyMwFnpCheckBox";
             OnlyMwFnpCheckBox.Size = new Size(150, 19);
             OnlyMwFnpCheckBox.TabIndex = 26;
@@ -420,7 +434,7 @@
             // 
             FishCritHitsCheckBox.AutoSize = true;
             FishCritHitsCheckBox.Enabled = false;
-            FishCritHitsCheckBox.Location = new Point(118, 186);
+            FishCritHitsCheckBox.Location = new Point(120, 183);
             FishCritHitsCheckBox.Name = "FishCritHitsCheckBox";
             FishCritHitsCheckBox.Size = new Size(74, 19);
             FishCritHitsCheckBox.TabIndex = 27;
@@ -432,7 +446,7 @@
             // 
             FishCritWoundsCheckBox.AutoSize = true;
             FishCritWoundsCheckBox.Enabled = false;
-            FishCritWoundsCheckBox.Location = new Point(276, 186);
+            FishCritWoundsCheckBox.Location = new Point(278, 183);
             FishCritWoundsCheckBox.Name = "FishCritWoundsCheckBox";
             FishCritWoundsCheckBox.Size = new Size(74, 19);
             FishCritWoundsCheckBox.TabIndex = 28;
@@ -445,7 +459,7 @@
             CritHitsComboBox.Enabled = false;
             CritHitsComboBox.FormattingEnabled = true;
             CritHitsComboBox.Items.AddRange(new object[] { "6+", "5+" });
-            CritHitsComboBox.Location = new Point(146, 211);
+            CritHitsComboBox.Location = new Point(148, 208);
             CritHitsComboBox.Name = "CritHitsComboBox";
             CritHitsComboBox.Size = new Size(46, 23);
             CritHitsComboBox.TabIndex = 29;
@@ -453,7 +467,7 @@
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(119, 214);
+            label6.Location = new Point(121, 211);
             label6.Name = "label6";
             label6.Size = new Size(21, 15);
             label6.TabIndex = 30;
@@ -463,7 +477,7 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(277, 209);
+            label7.Location = new Point(279, 206);
             label7.Name = "label7";
             label7.Size = new Size(21, 15);
             label7.TabIndex = 32;
@@ -475,43 +489,114 @@
             CritWoundsComboBox.Enabled = false;
             CritWoundsComboBox.FormattingEnabled = true;
             CritWoundsComboBox.Items.AddRange(new object[] { "6+", "5+" });
-            CritWoundsComboBox.Location = new Point(304, 206);
+            CritWoundsComboBox.Location = new Point(306, 203);
             CritWoundsComboBox.Name = "CritWoundsComboBox";
             CritWoundsComboBox.Size = new Size(46, 23);
             CritWoundsComboBox.TabIndex = 31;
+            // 
+            // DiffChart
+            // 
+            DiffChart.BackColor = Color.LightGray;
+            chartArea1.AxisX.Title = "To hit, to wound, armor";
+            chartArea1.BackColor = Color.FromArgb(224, 224, 224);
+            chartArea1.BorderColor = Color.Gray;
+            chartArea1.Name = "ChartArea1";
+            DiffChart.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            DiffChart.Legends.Add(legend1);
+            DiffChart.Location = new Point(6, 6);
+            DiffChart.Name = "DiffChart";
+            DiffChart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Bright;
+            series1.ChartArea = "ChartArea1";
+            series1.LabelFormat = "F1";
+            series1.Legend = "Legend1";
+            series1.Name = "NoMods";
+            series1.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
+            series2.ChartArea = "ChartArea1";
+            series2.Legend = "Legend1";
+            series2.Name = "Sustained";
+            series2.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
+            series3.ChartArea = "ChartArea1";
+            series3.Legend = "Legend1";
+            series3.Name = "Lethal";
+            series3.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
+            series4.ChartArea = "ChartArea1";
+            series4.Legend = "Legend1";
+            series4.Name = "Devastating";
+            series4.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
+            DiffChart.Series.Add(series1);
+            DiffChart.Series.Add(series2);
+            DiffChart.Series.Add(series3);
+            DiffChart.Series.Add(series4);
+            DiffChart.Size = new Size(989, 337);
+            DiffChart.TabIndex = 33;
+            DiffChart.Text = "chart1";
+            // 
+            // MainTabs
+            // 
+            MainTabs.Controls.Add(AttacksCalculator);
+            MainTabs.Controls.Add(Chart);
+            MainTabs.Location = new Point(2, 2);
+            MainTabs.Name = "MainTabs";
+            MainTabs.SelectedIndex = 0;
+            MainTabs.Size = new Size(1009, 377);
+            MainTabs.TabIndex = 34;
+            MainTabs.SelectedIndexChanged += MainTabs_SelectedIndexChanged;
+            // 
+            // AttacksCalculator
+            // 
+            AttacksCalculator.Controls.Add(WoundsTextbox);
+            AttacksCalculator.Controls.Add(label7);
+            AttacksCalculator.Controls.Add(SustainedHitsCheckbox);
+            AttacksCalculator.Controls.Add(CritWoundsComboBox);
+            AttacksCalculator.Controls.Add(LethalHitsCheckbox);
+            AttacksCalculator.Controls.Add(label6);
+            AttacksCalculator.Controls.Add(DevastatingWoundsCheckbox);
+            AttacksCalculator.Controls.Add(CritHitsComboBox);
+            AttacksCalculator.Controls.Add(AttacksTextbox);
+            AttacksCalculator.Controls.Add(FishCritWoundsCheckBox);
+            AttacksCalculator.Controls.Add(label1);
+            AttacksCalculator.Controls.Add(FishCritHitsCheckBox);
+            AttacksCalculator.Controls.Add(ToHitComboBox);
+            AttacksCalculator.Controls.Add(OnlyMwFnpCheckBox);
+            AttacksCalculator.Controls.Add(HitsTextbox);
+            AttacksCalculator.Controls.Add(label5);
+            AttacksCalculator.Controls.Add(ToWoundComboBox);
+            AttacksCalculator.Controls.Add(FnpComboBox);
+            AttacksCalculator.Controls.Add(label2);
+            AttacksCalculator.Controls.Add(groupBox3);
+            AttacksCalculator.Controls.Add(label3);
+            AttacksCalculator.Controls.Add(DamageFinalTextbox);
+            AttacksCalculator.Controls.Add(ArmorComboBox);
+            AttacksCalculator.Controls.Add(groupBox2);
+            AttacksCalculator.Controls.Add(label4);
+            AttacksCalculator.Controls.Add(groupBox1);
+            AttacksCalculator.Controls.Add(DamageTextbox);
+            AttacksCalculator.Location = new Point(4, 24);
+            AttacksCalculator.Name = "AttacksCalculator";
+            AttacksCalculator.Padding = new Padding(3);
+            AttacksCalculator.Size = new Size(1001, 349);
+            AttacksCalculator.TabIndex = 0;
+            AttacksCalculator.Text = "AttacksCalculator";
+            AttacksCalculator.UseVisualStyleBackColor = true;
+            // 
+            // Chart
+            // 
+            Chart.Controls.Add(DiffChart);
+            Chart.Location = new Point(4, 24);
+            Chart.Name = "Chart";
+            Chart.Padding = new Padding(3);
+            Chart.Size = new Size(1001, 349);
+            Chart.TabIndex = 1;
+            Chart.Text = "Chart";
+            Chart.UseVisualStyleBackColor = true;
             // 
             // AttacksCalculatorForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(964, 303);
-            Controls.Add(label7);
-            Controls.Add(CritWoundsComboBox);
-            Controls.Add(label6);
-            Controls.Add(CritHitsComboBox);
-            Controls.Add(FishCritWoundsCheckBox);
-            Controls.Add(FishCritHitsCheckBox);
-            Controls.Add(OnlyMwFnpCheckBox);
-            Controls.Add(label5);
-            Controls.Add(FnpComboBox);
-            Controls.Add(groupBox3);
-            Controls.Add(DamageFinalTextbox);
-            Controls.Add(groupBox2);
-            Controls.Add(groupBox1);
-            Controls.Add(DamageTextbox);
-            Controls.Add(label4);
-            Controls.Add(ArmorComboBox);
-            Controls.Add(WoundsTextbox);
-            Controls.Add(label3);
-            Controls.Add(label2);
-            Controls.Add(ToWoundComboBox);
-            Controls.Add(HitsTextbox);
-            Controls.Add(ToHitComboBox);
-            Controls.Add(label1);
-            Controls.Add(AttacksTextbox);
-            Controls.Add(DevastatingWoundsCheckbox);
-            Controls.Add(LethalHitsCheckbox);
-            Controls.Add(SustainedHitsCheckbox);
+            ClientSize = new Size(1013, 382);
+            Controls.Add(MainTabs);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Name = "AttacksCalculatorForm";
             Text = "Attacks Calculator";
@@ -522,8 +607,12 @@
             groupBox2.PerformLayout();
             groupBox3.ResumeLayout(false);
             groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)DiffChart).EndInit();
+            MainTabs.ResumeLayout(false);
+            AttacksCalculator.ResumeLayout(false);
+            AttacksCalculator.PerformLayout();
+            Chart.ResumeLayout(false);
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -567,5 +656,9 @@
         private Label label6;
         private Label label7;
         private ComboBox CritWoundsComboBox;
+        private System.Windows.Forms.DataVisualization.Charting.Chart DiffChart;
+        private TabControl MainTabs;
+        private TabPage AttacksCalculator;
+        private TabPage Chart;
     }
 }
