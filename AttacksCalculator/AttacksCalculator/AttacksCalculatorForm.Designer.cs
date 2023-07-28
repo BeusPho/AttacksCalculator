@@ -28,13 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            SustainedHitsCheckbox = new CheckBox();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            AutoHitsCheckbox = new CheckBox();
             LethalHitsCheckbox = new CheckBox();
             DevastatingWoundsCheckbox = new CheckBox();
             AttacksTextbox = new TextBox();
@@ -51,19 +51,19 @@
             radioButtonHitsNoReroll = new RadioButton();
             radioButtonHitsRerollOnes = new RadioButton();
             radioButtonHitsFullReroll = new RadioButton();
-            groupBox1 = new GroupBox();
+            ToHitRerollGroupBox = new GroupBox();
             groupBox2 = new GroupBox();
             radioButtonWoundNoReroll = new RadioButton();
             radioButtonWoundRerollOnes = new RadioButton();
             radioButtonWoundFullReroll = new RadioButton();
             DamageFinalTextbox = new TextBox();
-            groupBox3 = new GroupBox();
-            textBox1 = new TextBox();
-            radioButton5 = new RadioButton();
-            radioButton4 = new RadioButton();
-            radioButton1 = new RadioButton();
-            radioButton2 = new RadioButton();
-            radioButton3 = new RadioButton();
+            SustainedHitsGroupBox = new GroupBox();
+            SustainedHitsValueTextBox = new TextBox();
+            SustainedHitsCustomValue_RadioButton = new RadioButton();
+            SustainedHitsThreeRadioButton = new RadioButton();
+            SustainedHitsZeroRadioButton = new RadioButton();
+            SustainedHitsOneRadioButton = new RadioButton();
+            SustainedHitsTwoRadioButton = new RadioButton();
             label5 = new Label();
             FnpComboBox = new ComboBox();
             OnlyMwFnpCheckBox = new CheckBox();
@@ -77,25 +77,25 @@
             MainTabs = new TabControl();
             AttacksCalculator = new TabPage();
             Chart = new TabPage();
-            groupBox1.SuspendLayout();
+            ToHitRerollGroupBox.SuspendLayout();
             groupBox2.SuspendLayout();
-            groupBox3.SuspendLayout();
+            SustainedHitsGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)DiffChart).BeginInit();
             MainTabs.SuspendLayout();
             AttacksCalculator.SuspendLayout();
             Chart.SuspendLayout();
             SuspendLayout();
             // 
-            // SustainedHitsCheckbox
+            // AutoHitsCheckbox
             // 
-            SustainedHitsCheckbox.AutoSize = true;
-            SustainedHitsCheckbox.Location = new Point(14, 8);
-            SustainedHitsCheckbox.Name = "SustainedHitsCheckbox";
-            SustainedHitsCheckbox.Size = new Size(101, 19);
-            SustainedHitsCheckbox.TabIndex = 0;
-            SustainedHitsCheckbox.Text = "Sustained Hits";
-            SustainedHitsCheckbox.UseVisualStyleBackColor = true;
-            SustainedHitsCheckbox.CheckedChanged += Recalculate;
+            AutoHitsCheckbox.AutoSize = true;
+            AutoHitsCheckbox.Location = new Point(14, 8);
+            AutoHitsCheckbox.Name = "AutoHitsCheckbox";
+            AutoHitsCheckbox.Size = new Size(71, 19);
+            AutoHitsCheckbox.TabIndex = 0;
+            AutoHitsCheckbox.Text = "Autohits";
+            AutoHitsCheckbox.UseVisualStyleBackColor = true;
+            AutoHitsCheckbox.CheckedChanged += AutoHitsCheckbox_CheckedChanged;
             // 
             // LethalHitsCheckbox
             // 
@@ -256,17 +256,17 @@
             radioButtonHitsFullReroll.UseVisualStyleBackColor = true;
             radioButtonHitsFullReroll.CheckedChanged += RadioButtonHitsFullRerollClicked;
             // 
-            // groupBox1
+            // ToHitRerollGroupBox
             // 
-            groupBox1.Controls.Add(radioButtonHitsNoReroll);
-            groupBox1.Controls.Add(radioButtonHitsRerollOnes);
-            groupBox1.Controls.Add(radioButtonHitsFullReroll);
-            groupBox1.Location = new Point(120, 77);
-            groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(88, 100);
-            groupBox1.TabIndex = 21;
-            groupBox1.TabStop = false;
-            groupBox1.Text = "to hit";
+            ToHitRerollGroupBox.Controls.Add(radioButtonHitsNoReroll);
+            ToHitRerollGroupBox.Controls.Add(radioButtonHitsRerollOnes);
+            ToHitRerollGroupBox.Controls.Add(radioButtonHitsFullReroll);
+            ToHitRerollGroupBox.Location = new Point(120, 77);
+            ToHitRerollGroupBox.Name = "ToHitRerollGroupBox";
+            ToHitRerollGroupBox.Size = new Size(88, 100);
+            ToHitRerollGroupBox.TabIndex = 21;
+            ToHitRerollGroupBox.TabStop = false;
+            ToHitRerollGroupBox.Text = "to hit";
             // 
             // groupBox2
             // 
@@ -323,81 +323,86 @@
             DamageFinalTextbox.Size = new Size(100, 23);
             DamageFinalTextbox.TabIndex = 23;
             // 
-            // groupBox3
+            // SustainedHitsGroupBox
             // 
-            groupBox3.Controls.Add(textBox1);
-            groupBox3.Controls.Add(radioButton5);
-            groupBox3.Controls.Add(radioButton4);
-            groupBox3.Controls.Add(radioButton1);
-            groupBox3.Controls.Add(radioButton2);
-            groupBox3.Controls.Add(radioButton3);
-            groupBox3.Enabled = false;
-            groupBox3.Location = new Point(14, 77);
-            groupBox3.Name = "groupBox3";
-            groupBox3.Size = new Size(100, 155);
-            groupBox3.TabIndex = 22;
-            groupBox3.TabStop = false;
-            groupBox3.Text = "sustained hits";
+            SustainedHitsGroupBox.Controls.Add(SustainedHitsValueTextBox);
+            SustainedHitsGroupBox.Controls.Add(SustainedHitsCustomValue_RadioButton);
+            SustainedHitsGroupBox.Controls.Add(SustainedHitsThreeRadioButton);
+            SustainedHitsGroupBox.Controls.Add(SustainedHitsZeroRadioButton);
+            SustainedHitsGroupBox.Controls.Add(SustainedHitsOneRadioButton);
+            SustainedHitsGroupBox.Controls.Add(SustainedHitsTwoRadioButton);
+            SustainedHitsGroupBox.Location = new Point(14, 77);
+            SustainedHitsGroupBox.Name = "SustainedHitsGroupBox";
+            SustainedHitsGroupBox.Size = new Size(100, 155);
+            SustainedHitsGroupBox.TabIndex = 22;
+            SustainedHitsGroupBox.TabStop = false;
+            SustainedHitsGroupBox.Text = "Sustained hits";
             // 
-            // textBox1
+            // SustainedHitsValueTextBox
             // 
-            textBox1.Location = new Point(41, 121);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(53, 23);
-            textBox1.TabIndex = 20;
+            SustainedHitsValueTextBox.Enabled = false;
+            SustainedHitsValueTextBox.Location = new Point(41, 121);
+            SustainedHitsValueTextBox.Name = "SustainedHitsValueTextBox";
+            SustainedHitsValueTextBox.Size = new Size(53, 23);
+            SustainedHitsValueTextBox.TabIndex = 20;
+            SustainedHitsValueTextBox.TextChanged += SustainedHitsValueTextBox_TextChanged;
             // 
-            // radioButton5
+            // SustainedHitsCustomValue_RadioButton
             // 
-            radioButton5.AutoSize = true;
-            radioButton5.Location = new Point(11, 122);
-            radioButton5.Name = "radioButton5";
-            radioButton5.Size = new Size(28, 19);
-            radioButton5.TabIndex = 19;
-            radioButton5.Text = ":";
-            radioButton5.UseVisualStyleBackColor = true;
-            radioButton5.CheckedChanged += Recalculate;
+            SustainedHitsCustomValue_RadioButton.AutoSize = true;
+            SustainedHitsCustomValue_RadioButton.Location = new Point(11, 122);
+            SustainedHitsCustomValue_RadioButton.Name = "SustainedHitsCustomValue_RadioButton";
+            SustainedHitsCustomValue_RadioButton.Size = new Size(28, 19);
+            SustainedHitsCustomValue_RadioButton.TabIndex = 19;
+            SustainedHitsCustomValue_RadioButton.Text = ":";
+            SustainedHitsCustomValue_RadioButton.UseVisualStyleBackColor = true;
+            SustainedHitsCustomValue_RadioButton.CheckedChanged += SustainedHitsCustomValue_RadioButton_CheckedChanged;
             // 
-            // radioButton4
+            // SustainedHitsThreeRadioButton
             // 
-            radioButton4.AutoSize = true;
-            radioButton4.Location = new Point(11, 97);
-            radioButton4.Name = "radioButton4";
-            radioButton4.Size = new Size(31, 19);
-            radioButton4.TabIndex = 18;
-            radioButton4.Text = "3";
-            radioButton4.UseVisualStyleBackColor = true;
+            SustainedHitsThreeRadioButton.AutoSize = true;
+            SustainedHitsThreeRadioButton.Location = new Point(11, 97);
+            SustainedHitsThreeRadioButton.Name = "SustainedHitsThreeRadioButton";
+            SustainedHitsThreeRadioButton.Size = new Size(31, 19);
+            SustainedHitsThreeRadioButton.TabIndex = 18;
+            SustainedHitsThreeRadioButton.Text = "3";
+            SustainedHitsThreeRadioButton.UseVisualStyleBackColor = true;
+            SustainedHitsThreeRadioButton.CheckedChanged += SustainedHitsThreeRadioButton_CheckedChanged;
             // 
-            // radioButton1
+            // SustainedHitsZeroRadioButton
             // 
-            radioButton1.AutoSize = true;
-            radioButton1.Checked = true;
-            radioButton1.Location = new Point(11, 22);
-            radioButton1.Name = "radioButton1";
-            radioButton1.Size = new Size(41, 19);
-            radioButton1.TabIndex = 15;
-            radioButton1.TabStop = true;
-            radioButton1.Text = "No";
-            radioButton1.UseVisualStyleBackColor = true;
+            SustainedHitsZeroRadioButton.AutoSize = true;
+            SustainedHitsZeroRadioButton.Checked = true;
+            SustainedHitsZeroRadioButton.Location = new Point(11, 22);
+            SustainedHitsZeroRadioButton.Name = "SustainedHitsZeroRadioButton";
+            SustainedHitsZeroRadioButton.Size = new Size(41, 19);
+            SustainedHitsZeroRadioButton.TabIndex = 15;
+            SustainedHitsZeroRadioButton.TabStop = true;
+            SustainedHitsZeroRadioButton.Text = "No";
+            SustainedHitsZeroRadioButton.UseVisualStyleBackColor = true;
+            SustainedHitsZeroRadioButton.CheckedChanged += SustainedHitsZeroRadioButton_CheckedChanged;
             // 
-            // radioButton2
+            // SustainedHitsOneRadioButton
             // 
-            radioButton2.AutoSize = true;
-            radioButton2.Location = new Point(11, 47);
-            radioButton2.Name = "radioButton2";
-            radioButton2.Size = new Size(31, 19);
-            radioButton2.TabIndex = 16;
-            radioButton2.Text = "1";
-            radioButton2.UseVisualStyleBackColor = true;
+            SustainedHitsOneRadioButton.AutoSize = true;
+            SustainedHitsOneRadioButton.Location = new Point(11, 47);
+            SustainedHitsOneRadioButton.Name = "SustainedHitsOneRadioButton";
+            SustainedHitsOneRadioButton.Size = new Size(31, 19);
+            SustainedHitsOneRadioButton.TabIndex = 16;
+            SustainedHitsOneRadioButton.Text = "1";
+            SustainedHitsOneRadioButton.UseVisualStyleBackColor = true;
+            SustainedHitsOneRadioButton.CheckedChanged += SustainedHitsOneRadioButton_CheckedChanged;
             // 
-            // radioButton3
+            // SustainedHitsTwoRadioButton
             // 
-            radioButton3.AutoSize = true;
-            radioButton3.Location = new Point(11, 72);
-            radioButton3.Name = "radioButton3";
-            radioButton3.Size = new Size(49, 19);
-            radioButton3.TabIndex = 17;
-            radioButton3.Text = "2/d3";
-            radioButton3.UseVisualStyleBackColor = true;
+            SustainedHitsTwoRadioButton.AutoSize = true;
+            SustainedHitsTwoRadioButton.Location = new Point(11, 72);
+            SustainedHitsTwoRadioButton.Name = "SustainedHitsTwoRadioButton";
+            SustainedHitsTwoRadioButton.Size = new Size(49, 19);
+            SustainedHitsTwoRadioButton.TabIndex = 17;
+            SustainedHitsTwoRadioButton.Text = "2/d3";
+            SustainedHitsTwoRadioButton.UseVisualStyleBackColor = true;
+            SustainedHitsTwoRadioButton.CheckedChanged += SustainedHitsTwoRadioButton_CheckedChanged;
             // 
             // label5
             // 
@@ -497,37 +502,37 @@
             // DiffChart
             // 
             DiffChart.BackColor = Color.LightGray;
-            chartArea1.AxisX.Title = "To hit, to wound, armor";
-            chartArea1.BackColor = Color.FromArgb(224, 224, 224);
-            chartArea1.BorderColor = Color.Gray;
-            chartArea1.Name = "ChartArea1";
-            DiffChart.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            DiffChart.Legends.Add(legend1);
+            chartArea2.AxisX.Title = "To hit, to wound, armor";
+            chartArea2.BackColor = Color.FromArgb(224, 224, 224);
+            chartArea2.BorderColor = Color.Gray;
+            chartArea2.Name = "ChartArea1";
+            DiffChart.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            DiffChart.Legends.Add(legend2);
             DiffChart.Location = new Point(6, 6);
             DiffChart.Name = "DiffChart";
             DiffChart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Bright;
-            series1.ChartArea = "ChartArea1";
-            series1.LabelFormat = "F1";
-            series1.Legend = "Legend1";
-            series1.Name = "NoMods";
-            series1.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
-            series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Sustained";
-            series2.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
-            series3.ChartArea = "ChartArea1";
-            series3.Legend = "Legend1";
-            series3.Name = "Lethal";
-            series3.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
-            series4.ChartArea = "ChartArea1";
-            series4.Legend = "Legend1";
-            series4.Name = "Devastating";
-            series4.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
-            DiffChart.Series.Add(series1);
-            DiffChart.Series.Add(series2);
-            DiffChart.Series.Add(series3);
-            DiffChart.Series.Add(series4);
+            series5.ChartArea = "ChartArea1";
+            series5.LabelFormat = "F1";
+            series5.Legend = "Legend1";
+            series5.Name = "NoMods";
+            series5.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
+            series6.ChartArea = "ChartArea1";
+            series6.Legend = "Legend1";
+            series6.Name = "Sustained";
+            series6.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
+            series7.ChartArea = "ChartArea1";
+            series7.Legend = "Legend1";
+            series7.Name = "Lethal";
+            series7.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
+            series8.ChartArea = "ChartArea1";
+            series8.Legend = "Legend1";
+            series8.Name = "Devastating";
+            series8.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
+            DiffChart.Series.Add(series5);
+            DiffChart.Series.Add(series6);
+            DiffChart.Series.Add(series7);
+            DiffChart.Series.Add(series8);
             DiffChart.Size = new Size(989, 337);
             DiffChart.TabIndex = 33;
             DiffChart.Text = "chart1";
@@ -547,7 +552,7 @@
             // 
             AttacksCalculator.Controls.Add(WoundsTextbox);
             AttacksCalculator.Controls.Add(label7);
-            AttacksCalculator.Controls.Add(SustainedHitsCheckbox);
+            AttacksCalculator.Controls.Add(AutoHitsCheckbox);
             AttacksCalculator.Controls.Add(CritWoundsComboBox);
             AttacksCalculator.Controls.Add(LethalHitsCheckbox);
             AttacksCalculator.Controls.Add(label6);
@@ -564,13 +569,13 @@
             AttacksCalculator.Controls.Add(ToWoundComboBox);
             AttacksCalculator.Controls.Add(FnpComboBox);
             AttacksCalculator.Controls.Add(label2);
-            AttacksCalculator.Controls.Add(groupBox3);
+            AttacksCalculator.Controls.Add(SustainedHitsGroupBox);
             AttacksCalculator.Controls.Add(label3);
             AttacksCalculator.Controls.Add(DamageFinalTextbox);
             AttacksCalculator.Controls.Add(ArmorComboBox);
             AttacksCalculator.Controls.Add(groupBox2);
             AttacksCalculator.Controls.Add(label4);
-            AttacksCalculator.Controls.Add(groupBox1);
+            AttacksCalculator.Controls.Add(ToHitRerollGroupBox);
             AttacksCalculator.Controls.Add(DamageTextbox);
             AttacksCalculator.Location = new Point(4, 24);
             AttacksCalculator.Name = "AttacksCalculator";
@@ -601,12 +606,12 @@
             Name = "AttacksCalculatorForm";
             Text = "Attacks Calculator";
             Load += AttacksCalculatorFormLoad;
-            groupBox1.ResumeLayout(false);
-            groupBox1.PerformLayout();
+            ToHitRerollGroupBox.ResumeLayout(false);
+            ToHitRerollGroupBox.PerformLayout();
             groupBox2.ResumeLayout(false);
             groupBox2.PerformLayout();
-            groupBox3.ResumeLayout(false);
-            groupBox3.PerformLayout();
+            SustainedHitsGroupBox.ResumeLayout(false);
+            SustainedHitsGroupBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)DiffChart).EndInit();
             MainTabs.ResumeLayout(false);
             AttacksCalculator.ResumeLayout(false);
@@ -617,7 +622,7 @@
 
         #endregion
 
-        private CheckBox SustainedHitsCheckbox;
+        private CheckBox AutoHitsCheckbox;
         private CheckBox LethalHitsCheckbox;
         private CheckBox DevastatingWoundsCheckbox;
         private TextBox AttacksTextbox;
@@ -634,19 +639,19 @@
         private RadioButton radioButtonHitsNoReroll;
         private RadioButton radioButtonHitsRerollOnes;
         private RadioButton radioButtonHitsFullReroll;
-        private GroupBox groupBox1;
+        private GroupBox ToHitRerollGroupBox;
         private GroupBox groupBox2;
         private RadioButton radioButtonWoundNoReroll;
         private RadioButton radioButtonWoundRerollOnes;
         private RadioButton radioButtonWoundFullReroll;
         private TextBox DamageFinalTextbox;
-        private GroupBox groupBox3;
-        private RadioButton radioButton1;
-        private RadioButton radioButton2;
-        private RadioButton radioButton3;
-        private RadioButton radioButton5;
-        private RadioButton radioButton4;
-        private TextBox textBox1;
+        private GroupBox SustainedHitsGroupBox;
+        private RadioButton SustainedHitsZeroRadioButton;
+        private RadioButton SustainedHitsOneRadioButton;
+        private RadioButton SustainedHitsTwoRadioButton;
+        private RadioButton SustainedHitsCustomValue_RadioButton;
+        private RadioButton SustainedHitsThreeRadioButton;
+        private TextBox SustainedHitsValueTextBox;
         private Label label5;
         private ComboBox FnpComboBox;
         private CheckBox OnlyMwFnpCheckBox;

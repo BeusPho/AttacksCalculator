@@ -9,6 +9,7 @@ namespace AttacksCalculator
     public partial class AttacksCalculatorForm : Form
     {
         private bool IsChartCalculated = false;
+        private int SustainedMultiplicator = 0;
 
         public AttacksCalculatorForm()
         {
@@ -57,22 +58,25 @@ namespace AttacksCalculator
                 || ToHitComboBox.SelectedIndex > 4 || ToHitComboBox.SelectedIndex < 0
                 || ToWoundComboBox.SelectedIndex > 4 || ToWoundComboBox.SelectedIndex < 0
                 || ArmorComboBox.SelectedIndex > 5 || ArmorComboBox.SelectedIndex < 0
-                || FnpComboBox.SelectedIndex > 3 || FnpComboBox.SelectedIndex < 0)
+                || FnpComboBox.SelectedIndex > 3 || FnpComboBox.SelectedIndex < 0
+                || SustainedHitsCustomValue_RadioButton.Checked && int.TryParse(SustainedHitsValueTextBox.Text, out _) is false
+                )
             {
                 return;
             }
 
             var hitRerollResult = CaclulateHitRoll(attacks);
-            var hitsPostReroll = hitRerollResult.Item1;
+            var hitsPostReroll = AutoHitsCheckbox.Checked ? attacks : hitRerollResult.Item1;
             var hitCritsPostReroll = hitRerollResult.Item2;
 
             HitsTextbox.Text = hitsPostReroll.ToString("F3");
-            if (SustainedHitsCheckbox.Checked)
+            var sustainedAmmount = hitCritsPostReroll * SustainedMultiplicator;
+            if (sustainedAmmount > 0)
             {
-                HitsTextbox.Text += $" +{hitCritsPostReroll:F2}S";
+                HitsTextbox.Text += $" +{sustainedAmmount:F2}S";
             }
 
-            var hitsToCalculateWounds = hitsPostReroll + (SustainedHitsCheckbox.Checked ? hitCritsPostReroll : 0);
+            var hitsToCalculateWounds = hitsPostReroll + sustainedAmmount;
             var woundRerollResult = CaclulateWoundRoll(hitsToCalculateWounds);
             var woundsPostReroll = woundRerollResult.Item1;
             var woundCritsPostReroll = woundRerollResult.Item2;
@@ -260,6 +264,85 @@ namespace AttacksCalculator
                 DiffChart.ChartAreas.Single().AxisX.Interval = 1;
                 DiffChart.DataBind();
                 IsChartCalculated = true;
+            }
+        }
+
+        private void SustainedHitsCustomValue_RadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            SustainedHitsValueTextBox.Enabled = true;
+            SustainedHitsValueTextBox_TextChanged(sender, e);
+        }
+
+        private void SustainedHitsRadioButtonChanged(object sender, EventArgs e)
+        {
+            SustainedHitsValueTextBox.Enabled = false;
+            Recalculate(sender, e);
+        }
+
+        private void SustainedHitsValueTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (int.TryParse(SustainedHitsValueTextBox.Text, out var sustained))
+            {
+                SustainedMultiplicator = sustained;
+            }
+            Recalculate(sender, e);
+        }
+
+        private void SustainedHitsZeroRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (SustainedHitsZeroRadioButton.Checked == true)
+            {
+                SustainedMultiplicator = 0;
+                SustainedHitsRadioButtonChanged(sender, e);
+            }
+        }
+
+        private void SustainedHitsTwoRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (SustainedHitsTwoRadioButton.Checked == true)
+            {
+                SustainedMultiplicator = 2;
+                SustainedHitsRadioButtonChanged(sender, e);
+            }
+        }
+
+        private void SustainedHitsOneRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (SustainedHitsOneRadioButton.Checked == true)
+            {
+                SustainedMultiplicator = 1;
+                SustainedHitsRadioButtonChanged(sender, e);
+            }
+        }
+
+        private void SustainedHitsThreeRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (SustainedHitsThreeRadioButton.Checked == true)
+            {
+                SustainedMultiplicator = 3;
+                SustainedHitsRadioButtonChanged(sender, e);
+            }
+        }
+
+        private void AutoHitsCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (AutoHitsCheckbox.Checked is true)
+            {
+                ToHitRerollGroupBox.Enabled = false;
+                SustainedHitsZeroRadioButton.Checked = true;
+                ToHitComboBox.Enabled = false;
+                LethalHitsCheckbox.Checked = false;
+                LethalHitsCheckbox.Enabled = false;
+                SustainedHitsGroupBox.Enabled = false;
+                SustainedHitsRadioButtonChanged(sender, e);
+            }
+            else
+            {
+                ToHitRerollGroupBox.Enabled = true;
+                ToHitComboBox.Enabled = true;
+                LethalHitsCheckbox.Enabled = true;
+                SustainedHitsGroupBox.Enabled = true;
+                Recalculate(sender, e);
             }
         }
     }
