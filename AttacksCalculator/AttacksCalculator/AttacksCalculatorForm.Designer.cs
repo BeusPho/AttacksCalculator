@@ -28,12 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             AutoHitsCheckbox = new CheckBox();
             LethalHitsCheckbox = new CheckBox();
             DevastatingWoundsCheckbox = new CheckBox();
@@ -66,7 +66,6 @@
             SustainedHitsTwoRadioButton = new RadioButton();
             label5 = new Label();
             FnpComboBox = new ComboBox();
-            OnlyMwFnpCheckBox = new CheckBox();
             FishCritHitsCheckBox = new CheckBox();
             FishCritWoundsCheckBox = new CheckBox();
             CritHitsComboBox = new ComboBox();
@@ -424,17 +423,6 @@
             FnpComboBox.TabIndex = 24;
             FnpComboBox.SelectedIndexChanged += Recalculate;
             // 
-            // OnlyMwFnpCheckBox
-            // 
-            OnlyMwFnpCheckBox.AutoSize = true;
-            OnlyMwFnpCheckBox.Location = new Point(594, 8);
-            OnlyMwFnpCheckBox.Name = "OnlyMwFnpCheckBox";
-            OnlyMwFnpCheckBox.Size = new Size(150, 19);
-            OnlyMwFnpCheckBox.TabIndex = 26;
-            OnlyMwFnpCheckBox.Text = "Only vs Mortal Wounds";
-            OnlyMwFnpCheckBox.UseVisualStyleBackColor = true;
-            OnlyMwFnpCheckBox.CheckedChanged += Recalculate;
-            // 
             // FishCritHitsCheckBox
             // 
             FishCritHitsCheckBox.AutoSize = true;
@@ -461,13 +449,13 @@
             // 
             // CritHitsComboBox
             // 
-            CritHitsComboBox.Enabled = false;
             CritHitsComboBox.FormattingEnabled = true;
-            CritHitsComboBox.Items.AddRange(new object[] { "6+", "5+" });
+            CritHitsComboBox.Items.AddRange(new object[] { "6+", "5+", "4+", "3+", "2+" });
             CritHitsComboBox.Location = new Point(148, 208);
             CritHitsComboBox.Name = "CritHitsComboBox";
             CritHitsComboBox.Size = new Size(46, 23);
             CritHitsComboBox.TabIndex = 29;
+            CritHitsComboBox.SelectedIndexChanged += Recalculate;
             // 
             // label6
             // 
@@ -491,48 +479,48 @@
             // 
             // CritWoundsComboBox
             // 
-            CritWoundsComboBox.Enabled = false;
             CritWoundsComboBox.FormattingEnabled = true;
-            CritWoundsComboBox.Items.AddRange(new object[] { "6+", "5+" });
+            CritWoundsComboBox.Items.AddRange(new object[] { "6+", "5+", "4+", "3+", "2+" });
             CritWoundsComboBox.Location = new Point(306, 203);
             CritWoundsComboBox.Name = "CritWoundsComboBox";
             CritWoundsComboBox.Size = new Size(46, 23);
             CritWoundsComboBox.TabIndex = 31;
+            CritWoundsComboBox.SelectedIndexChanged += Recalculate;
             // 
             // DiffChart
             // 
             DiffChart.BackColor = Color.LightGray;
-            chartArea2.AxisX.Title = "To hit, to wound, armor";
-            chartArea2.BackColor = Color.FromArgb(224, 224, 224);
-            chartArea2.BorderColor = Color.Gray;
-            chartArea2.Name = "ChartArea1";
-            DiffChart.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            DiffChart.Legends.Add(legend2);
+            chartArea1.AxisX.Title = "To hit, to wound, armor";
+            chartArea1.BackColor = Color.FromArgb(224, 224, 224);
+            chartArea1.BorderColor = Color.Gray;
+            chartArea1.Name = "ChartArea1";
+            DiffChart.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            DiffChart.Legends.Add(legend1);
             DiffChart.Location = new Point(6, 6);
             DiffChart.Name = "DiffChart";
             DiffChart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Bright;
-            series5.ChartArea = "ChartArea1";
-            series5.LabelFormat = "F1";
-            series5.Legend = "Legend1";
-            series5.Name = "NoMods";
-            series5.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
-            series6.ChartArea = "ChartArea1";
-            series6.Legend = "Legend1";
-            series6.Name = "Sustained";
-            series6.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
-            series7.ChartArea = "ChartArea1";
-            series7.Legend = "Legend1";
-            series7.Name = "Lethal";
-            series7.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
-            series8.ChartArea = "ChartArea1";
-            series8.Legend = "Legend1";
-            series8.Name = "Devastating";
-            series8.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
-            DiffChart.Series.Add(series5);
-            DiffChart.Series.Add(series6);
-            DiffChart.Series.Add(series7);
-            DiffChart.Series.Add(series8);
+            series1.ChartArea = "ChartArea1";
+            series1.LabelFormat = "F1";
+            series1.Legend = "Legend1";
+            series1.Name = "NoMods";
+            series1.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
+            series2.ChartArea = "ChartArea1";
+            series2.Legend = "Legend1";
+            series2.Name = "Sustained";
+            series2.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
+            series3.ChartArea = "ChartArea1";
+            series3.Legend = "Legend1";
+            series3.Name = "Lethal";
+            series3.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
+            series4.ChartArea = "ChartArea1";
+            series4.Legend = "Legend1";
+            series4.Name = "Devastating";
+            series4.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.String;
+            DiffChart.Series.Add(series1);
+            DiffChart.Series.Add(series2);
+            DiffChart.Series.Add(series3);
+            DiffChart.Series.Add(series4);
             DiffChart.Size = new Size(989, 337);
             DiffChart.TabIndex = 33;
             DiffChart.Text = "chart1";
@@ -563,7 +551,6 @@
             AttacksCalculator.Controls.Add(label1);
             AttacksCalculator.Controls.Add(FishCritHitsCheckBox);
             AttacksCalculator.Controls.Add(ToHitComboBox);
-            AttacksCalculator.Controls.Add(OnlyMwFnpCheckBox);
             AttacksCalculator.Controls.Add(HitsTextbox);
             AttacksCalculator.Controls.Add(label5);
             AttacksCalculator.Controls.Add(ToWoundComboBox);
@@ -603,6 +590,7 @@
             ClientSize = new Size(1013, 382);
             Controls.Add(MainTabs);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
             Name = "AttacksCalculatorForm";
             Text = "Attacks Calculator";
             Load += AttacksCalculatorFormLoad;
@@ -654,7 +642,6 @@
         private TextBox SustainedHitsValueTextBox;
         private Label label5;
         private ComboBox FnpComboBox;
-        private CheckBox OnlyMwFnpCheckBox;
         private CheckBox FishCritHitsCheckBox;
         private CheckBox FishCritWoundsCheckBox;
         private ComboBox CritHitsComboBox;

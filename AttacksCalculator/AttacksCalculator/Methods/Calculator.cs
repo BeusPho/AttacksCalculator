@@ -71,4 +71,14 @@ public class Calculator
         0 => attacks / 6,
         _ => throw new NotImplementedException(),
     };
+
+    internal static double CritOnDice(double attacks, int index) => index switch
+    {
+        4 => attacks * 5 / 6,
+        3 => attacks * 2 / 3,
+        2 => attacks / 2,
+        1 => attacks / 3,
+        0 => attacks / 6,
+        _ => throw new NotImplementedException(),
+    };
 }

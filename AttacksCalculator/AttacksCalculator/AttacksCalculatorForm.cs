@@ -140,7 +140,7 @@ namespace AttacksCalculator
             }
 
             var hitsMinusLethalPostReroll = hitsPostReroll - (LethalHitsCheckbox.Checked ? critsPostReroll : 0);
-            return new Tuple<double, double>(hitsMinusLethalPostReroll, critsPostReroll);
+            return new Tuple<double, double>(hitsMinusLethalPostReroll < 0 ? 0 : hitsMinusLethalPostReroll, critsPostReroll);
         }
 
         private Tuple<double, double> CaclulateWoundRoll(double hits)
@@ -185,20 +185,11 @@ namespace AttacksCalculator
             }
 
             var woundsMinusDevastatingPostReroll = woundsPostReroll - (DevastatingWoundsCheckbox.Checked ? woundCritsPostReroll : 0);
-            return new Tuple<double, double>(woundsMinusDevastatingPostReroll, woundCritsPostReroll);
+            return new Tuple<double, double>(woundsMinusDevastatingPostReroll < 0 ? 0 : woundsMinusDevastatingPostReroll, woundCritsPostReroll);
         }
 
         internal double GetDamageFelt(double woundsDevastated, double damageCalculated)
-        {
-            if (OnlyMwFnpCheckBox.Checked)
-            {
-                return damageCalculated + Calculator.CalculateFnp(woundsDevastated, FnpComboBox.SelectedIndex);
-            }
-            else
-            {
-                return Calculator.CalculateFnp(damageCalculated + woundsDevastated, FnpComboBox.SelectedIndex);
-            }
-        }
+            => Calculator.CalculateFnp(damageCalculated + woundsDevastated, FnpComboBox.SelectedIndex);
 
         internal double CalculateWounds(double hits, int? index = null)
         {
@@ -208,9 +199,10 @@ namespace AttacksCalculator
             return Calculator.WoundDiceResult(hits, index.Value);
         }
 
-        internal static double CalculateCriticalWounds(double hits)
+        internal double CalculateCriticalWounds(double hits)
         {
-            return hits / 6;
+            var index = CritWoundsComboBox.SelectedIndex;
+            return Calculator.CritOnDice(hits, index);
         }
 
         internal double CalculateHits(double attacks, int? index = null)
@@ -219,9 +211,10 @@ namespace AttacksCalculator
             return Calculator.HitDiceResult(attacks, index.Value);
         }
 
-        internal static double CalculateCriticalHits(double attacks)
+        internal double CalculateCriticalHits(double attacks)
         {
-            return attacks / 6;
+            var index = CritHitsComboBox.SelectedIndex;
+            return Calculator.CritOnDice(attacks, index);
         }
 
         private void MainTabs_SelectedIndexChanged(object sender, EventArgs e)
@@ -335,6 +328,7 @@ namespace AttacksCalculator
                 LethalHitsCheckbox.Enabled = false;
                 SustainedHitsGroupBox.Enabled = false;
                 SustainedHitsRadioButtonChanged(sender, e);
+                CritHitsComboBox.Enabled = false;
             }
             else
             {
@@ -342,8 +336,9 @@ namespace AttacksCalculator
                 ToHitComboBox.Enabled = true;
                 LethalHitsCheckbox.Enabled = true;
                 SustainedHitsGroupBox.Enabled = true;
-                Recalculate(sender, e);
+                CritHitsComboBox.Enabled = true;
             }
+            Recalculate(sender, e);
         }
     }
 }
