@@ -129,6 +129,11 @@ namespace AttacksCalculator
                     throw new NotImplementedException();
                 }
             }
+            else if (radioButtonHitsRerollOneFailed.Checked)
+            {
+                hitsPostReroll = CaclulateHitDiceRerollOneFailed(attacks);
+                critsPostReroll = CaclulateHitDiceCritsRerollOneFailed(attacks);
+            }
             else if (radioButtonHitsNoReroll.Checked)
             {
                 hitsPostReroll = hitsPreReroll;
@@ -174,6 +179,11 @@ namespace AttacksCalculator
                     throw new NotImplementedException();
                 }
             }
+            else if (radioButtonWoundOneFailed.Checked)
+            {
+                woundsPostReroll = CaclulateWoundDiceRerollOneFailed(hits);
+                woundCritsPostReroll = CaclulateWoundDiceCritsRerollOneFailed(hits);
+            }
             else if (radioButtonWoundNoReroll.Checked)
             {
                 woundsPostReroll = woundsPreReroll;
@@ -188,15 +198,39 @@ namespace AttacksCalculator
             return new Tuple<double, double>(woundsMinusDevastatingPostReroll < 0 ? 0 : woundsMinusDevastatingPostReroll, woundCritsPostReroll);
         }
 
+        private double CaclulateHitDiceRerollOneFailed(double attacks, int? dropdownIndex = null)
+        {
+            dropdownIndex = dropdownIndex == null ? ToHitComboBox.SelectedIndex : dropdownIndex;
+            return Calculator.HitDiceRerollOneFailed(attacks, dropdownIndex.Value);
+        }
+
+        private double CaclulateHitDiceCritsRerollOneFailed(double attacks, int? dropdownIndex = null)
+        {
+            dropdownIndex = dropdownIndex == null ? CritHitsComboBox.SelectedIndex : dropdownIndex;
+            return Calculator.HitDiceCritRerollOneFailed(attacks, dropdownIndex.Value);
+        }
+
+        private double CaclulateWoundDiceRerollOneFailed(double attacks, int? dropdownIndex = null)
+        {
+            dropdownIndex = dropdownIndex == null ? ToWoundComboBox.SelectedIndex : dropdownIndex;
+            return Calculator.HitDiceRerollOneFailed(attacks, dropdownIndex.Value);
+        }
+
+        private double CaclulateWoundDiceCritsRerollOneFailed(double attacks, int? dropdownIndex = null)
+        {
+            dropdownIndex = dropdownIndex == null ? CritWoundsComboBox.SelectedIndex : dropdownIndex;
+            return Calculator.HitDiceCritRerollOneFailed(attacks, dropdownIndex.Value);
+        }
+
         internal double GetDamageFelt(double woundsDevastated, double damageCalculated)
             => Calculator.CalculateFnp(damageCalculated + woundsDevastated, FnpComboBox.SelectedIndex);
 
-        internal double CalculateWounds(double hits, int? index = null)
+        internal double CalculateWounds(double hits, int? dropdownIndex = null)
         {
-            index = index == null ? ToWoundComboBox.SelectedIndex : index;
-            var rollValue = ToHitComboBox.Items[index.Value];
+            dropdownIndex = dropdownIndex == null ? ToWoundComboBox.SelectedIndex : dropdownIndex;
+            var rollValue = ToHitComboBox.Items[dropdownIndex.Value];
 
-            return Calculator.WoundDiceResult(hits, index.Value);
+            return Calculator.WoundDiceResult(hits, dropdownIndex.Value);
         }
 
         internal double CalculateCriticalWounds(double hits)
@@ -205,10 +239,10 @@ namespace AttacksCalculator
             return Calculator.CritOnDice(hits, index);
         }
 
-        internal double CalculateHits(double attacks, int? index = null)
+        internal double CalculateHits(double attacks, int? dropdownIndex = null)
         {
-            index = index == null ? ToHitComboBox.SelectedIndex : index;
-            return Calculator.HitDiceResult(attacks, index.Value);
+            dropdownIndex = dropdownIndex == null ? ToHitComboBox.SelectedIndex : dropdownIndex;
+            return Calculator.HitDiceResult(attacks, dropdownIndex.Value);
         }
 
         internal double CalculateCriticalHits(double attacks)

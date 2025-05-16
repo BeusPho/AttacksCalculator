@@ -50,13 +50,30 @@ public class Calculator
 
     internal static double HitDiceResult(double attacks, int index)
     {
+        return attacks * DieResult(index);
+    }
+
+    internal static double HitDiceRerollOneFailed(double attacks, int index)
+    {
+        var p = DieResult(index);
+        return p * (attacks + 1 - Math.Pow((1 - p), attacks));
+    }
+
+    internal static double HitDiceCritRerollOneFailed(double attacks, int index)
+    {
+        var p = CritOnDie(index);
+        return p * (attacks + 1 - Math.Pow((1 - p), attacks));
+    }
+
+    private static double DieResult(int index)
+    {
         return index switch
         {
-            0 => attacks * 5 / 6,
-            1 => attacks * 2 / 3,
-            2 => attacks / 2,
-            3 => attacks / 3,
-            4 => attacks / 6,
+            0 => (double) 5 / 6,
+            1 => (double) 2 / 3,
+            2 => (double) 1 / 2,
+            3 => (double) 1 / 3,
+            4 => (double) 1 / 6,
             _ => throw new NotImplementedException(),
         };
     }
@@ -72,13 +89,21 @@ public class Calculator
         _ => throw new NotImplementedException(),
     };
 
-    internal static double CritOnDice(double attacks, int index) => index switch
+    internal static double CritOnDice(double attacks, int index)
     {
-        4 => attacks * 5 / 6,
-        3 => attacks * 2 / 3,
-        2 => attacks / 2,
-        1 => attacks / 3,
-        0 => attacks / 6,
-        _ => throw new NotImplementedException(),
-    };
+        return attacks * CritOnDie(index);
+    }
+
+    private static double CritOnDie(int index)
+    {
+        return index switch
+        {
+            4 => (double) 5 / 6,
+            3 => (double) 2 / 3,
+            2 => (double) 1 / 2,
+            1 => (double) 1 / 3,
+            0 => (double) 1 / 6,
+            _ => throw new NotImplementedException(),
+        };
+    }
 }
